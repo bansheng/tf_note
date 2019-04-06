@@ -1,4 +1,4 @@
-### 1. 查看cuda版本
+## 1. 查看cuda版本
 #### 1.1 访问文件
     >>> cat  /usr/local/cuda/version.txt
     CUDA Version 8.0.61
@@ -9,7 +9,7 @@
     Built on Tue_Jan_10_13:22:03_CST_2017
     Cuda compilation tools, release 8.0, V8.0.61
 
-### 2. 查看cuDNN版本
+## 2. 查看cuDNN版本
     >>> cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
     #define CUDNN_MAJOR      6
     #define CUDNN_MINOR      0

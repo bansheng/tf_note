@@ -1,8 +1,8 @@
-### 1. 逻辑回归
+## 1. 逻辑回归
 与线性回归不同，逻辑回归简单而言就是分类问题。
 
-### 2. tf.one_hot()
-```
+## 2. tf.one_hot()
+```py
 tf.one_hot(
     indices,
     depth,
@@ -25,7 +25,7 @@ off_value默认为0
 
 输出的第depth维第indice位(indice < depth && indice > 0, 否则全部输出off_value)值为on_value，其余位置为off_value。
 
-```
+```py
 indices = [0, 1, 2]
 depth = 3
 tf.one_hot(indices, depth)  # output: [3 x 3]
@@ -54,7 +54,7 @@ tf.one_hot(indices, depth,
 #   [0.0, 0.0, 0.0]]]  # one_hot(-1)
 ```
 
-### 3. 逻辑回归
+## 3. 逻辑回归
 1. 构造预测函数
 ```math
     sigmod函数

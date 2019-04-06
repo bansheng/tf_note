@@ -1,4 +1,4 @@
-### 1.tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
+## 1.tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
 梯度下降优化器
 ```
 minimize(
@@ -14,7 +14,7 @@ minimize(
 ```
 通过更新var_list添加操作来最小化loss
 
-### 2. tf.train.exponential_decay
+## 2. tf.train.exponential_decay
 **指数衰减法**   
 为解决设定学习率(learning rate)问题，提供了指数衰减法来解决。
 
