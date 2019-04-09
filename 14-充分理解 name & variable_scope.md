@@ -1,18 +1,24 @@
+# 充分理解name_scope和variable_scope
+
 [参考：TensorFlow共享变量](http://wiki.jikexueyuan.com/project/tensorflow-zh/how_tos/variable_scope.html)
-## 1. name 和 variable_scope的作用
-1. name_scope:                         为了更好地管理变量的命名空间而提出的。比如在 tensorboard 中，因为引入了 name_scope， 我们的 Graph 看起来才井然有序。
+
+## 1. name_scope 和 variable_scope的作用
+
+1. name_scope:为了更好地管理变量的命名空间而提出的。比如在tensorboard中，因为引入了 name_scope， 我们的 Graph 看起来才井然有序。
 2. variable_scope: 大大大部分情况下，跟 tf.get_variable() 配合使用，实现变量共享的功能。
 
 ## 2. 三种方式创建变量： tf.placeholder, tf.Variable, tf.get_variable
+
 + tf.placeholder() 占位符。*trainable==False*
 + tf.Variable() 一般变量用这种方式定义。*可以选择 trainable 类型*
 + tf.get_variable() 一般都是和 tf.variable_scope() 配合使用，从而实现变量共享的功能。 *可以选择 trainable 类型*
 + 这三种方式所定义的变量具有相同的类型。而且只有 tf.get_variable() 创建的变量之间会发生命名冲突
 
-
 ## 3. 探索 name_scope 和 variable_scope
+
 ### 1. name_scope对get_variable无影响
-```
+
+```py
 import tensorflow as tf
 with tf.name_scope('outer1'):
     v1 = tf.Variable([1], name='v1')
@@ -26,17 +32,16 @@ print('v3.name: ', v3.name)
 with tf.name_scope('outer2'):
     v4 = tf.get_variable(name='v4',shape=[])
 print('v4.name: ', v4.name)
-```
-```
->>>v1.name:  outer1/v1:0
->>>v2.name:  outer1/inner2/v2:0
->>>v3.name:  inner2/v3:0
->>>v4.name:  v4:0
-```
 
+>>>v1.name:  outer1/v1:0
+v2.name:  outer1/inner2/v2:0
+v3.name:  inner2/v3:0
+v4.name:  v4:0
+```
 
 ### 2. get_variable和Variable的区别
-```
+
+```py
 import tensorflow as tf
 sess = tf.Session()
 
@@ -60,7 +65,8 @@ print('There are %d train_able_variables in the Graph: ' % len(vs))
 for v in vs:
     print(v)
 ```
-```
+
+```shell
 # There are 8 train_able_variables in the Graph:
 <tf.Variable 'conv1_weights:0' shape=(5, 5, 32, 32) dtype=float32_ref>
 <tf.Variable 'conv1_biases:0' shape=(32,) dtype=float32_ref>
@@ -70,10 +76,11 @@ for v in vs:
 <tf.Variable 'conv1_biases_1:0' shape=(32,) dtype=float32_ref>
 <tf.Variable 'conv2_weights_1:0' shape=(5, 5, 32, 32) dtype=float32_ref>
 <tf.Variable 'conv2_biases_1:0' shape=(32,) dtype=float32_ref>
+```
 
-```
 > 通过上面可以看到如果使用普通的Variable，会创建两次变量。
-```
+
+```py
 import tensorflow as tf
 sess = tf.Session()
 
@@ -88,7 +95,7 @@ def conv_relu(kernel_shape, bias_shape):
 
 def my_image_filter():
     # 按照下面的方式定义卷积层，非常直观，而且富有层次感
-    with tf.variable_scope("conv1"): 
+    with tf.variable_scope("conv1"):
     # 创建两个变量
         # Variables created here will be named "conv1/weights", "conv1/biases".
         relu1 = conv_relu([5, 5, 32, 32], [32])
@@ -111,12 +118,11 @@ vs = tf.trainable_variables()
 print('There are %d train_able_variables in the Graph: ' % len(vs))
 for v in vs:
     print(v)
+>>>There are 4 train_able_variables in the Graph:
+<tf.Variable 'conv1/weights:0' shape=(5, 5, 32, 32) dtype=float32_ref>
+<tf.Variable 'conv1/biases:0' shape=(32,) dtype=float32_ref>
+<tf.Variable 'conv2/weights:0' shape=(5, 5, 32, 32) dtype=float32_ref>
+<tf.Variable 'conv2/biases:0' shape=(32,) dtype=float32_ref>
 ```
-```
->>>There are 4 train_able_variables in the Graph: 
-    <tf.Variable 'conv1/weights:0' shape=(5, 5, 32, 32) dtype=float32_ref>
-    <tf.Variable 'conv1/biases:0' shape=(32,) dtype=float32_ref>
-    <tf.Variable 'conv2/weights:0' shape=(5, 5, 32, 32) dtype=float32_ref>
-    <tf.Variable 'conv2/biases:0' shape=(32,) dtype=float32_ref>
-```
+
 > 通过tf.variable_scope和tf.get_variable()方法，能够共享变量，而不是创建新的变量
