@@ -80,7 +80,7 @@ print(f(23,1,4)) # 不使用默认
 
 f2 = theano.function([x,
                      theano.In(y, value=1),
-                     theano.In(w,value=2,name='weights')],
+                     theano.In(w, value=2, name='weights')],
                     z)
 print(f2(23,1,weights=4)) ##调用方式
 >>> 96.0

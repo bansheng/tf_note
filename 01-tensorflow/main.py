@@ -41,4 +41,12 @@ def expand_dim_test():
         sess.run(tf.global_variables_initializer())
         print(sess.run(t1))
      
-expand_dim_test()
+def matrix_mul_test():
+    import numpy as np
+    m1 = np.ones((1,2,5))
+    m2 = np.ones((5,5))
+    m = np.dot(m1, m2)
+
+    print(m.shape)
+
+matrix_mul_test()
