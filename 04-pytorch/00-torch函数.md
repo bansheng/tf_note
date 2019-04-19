@@ -170,3 +170,152 @@ tensor = variable.data
 ```
 
 ### 9.3 tensor.data = tensor
+
+## 10. pytorch主要层的函数
+
+```py
+from torch.nn import \
+BatchNorm2d, BatchNorm3d, Conv2d, Conv3d, LeakyReLU,
+Linear, MaxPool2d, Sigmoid, Tanh
+```
+
+### 10.1 卷积层Conv2d
+
+二维卷积层, 输入的尺度是(N, C_in,H,W)，输出尺度（N,C_out,H_out,W_out）
+卷积核也有通道值 卷积核的size （C_out, C_in, F, F)
+卷积核的数目为out_channels，卷积核的通道数为in_channels
+
+```py
+class torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=True)
+```
+
++ in_channels(int) – 输入信号的通道
++ out_channels(int) – 卷积产生的通道
++ kerner_size(int or tuple) - 卷积核的尺寸
++ stride(int or tuple, optional) - 卷积步长
++ padding(int or tuple, optional) - 输入的每一条边补充0的层数
++ dilation(int or tuple, optional) – 卷积核元素之间的间距
++ groups(int, optional) – 从输入通道到输出通道的阻塞连接数
++ bias(bool, optional) - 如果bias=True，添加偏置
+
+### 10.2 卷积层Conv3d
+
+三维卷积层, 输入的尺度是(N, C_in,D,H,W)，输出尺度（N,C_out,D_out,H_out,W_out）
+
+```py
+class torch.nn.Conv3d(in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=True)
+```
+
++ in_channels(int) – 输入信号的通道
++ out_channels(int) – 卷积产生的通道
++ kerner_size(int or tuple) - 卷积核的尺寸
++ stride(int or tuple, optional) - 卷积步长
++ padding(int or tuple, optional) - 输入的每一条边补充0的层数
++ dilation(int or tuple, optional) – 卷积核元素之间的间距
++ groups(int, optional) – 从输入通道到输出通道的阻塞连接数
++ bias(bool, optional) - 如果bias=True，添加偏置
+
+### 10.3 池化层MaxPool2d
+
+对于输入信号的输入通道，提供2维最大池化（max pooling）操作
+
+```py
+class torch.nn.MaxPool2d(kernel_size, stride=None, padding=0, dilation=1, return_indices=False, ceil_mode=False)
+```
+
++ kernel_size(int or tuple) - max pooling的窗口大小
++ stride(int or tuple, optional) - max pooling的窗口移动的步长。默认值是kernel_size
++ padding(int or tuple, optional) - 输入的每一条边补充0的层数
++ dilation(int or tuple, optional) – 一个控制窗口中元素步幅的参
++ return_indices - 如果等于True，会返回输出最大值的序号，对于上采样操作会有帮助
++ ceil_mode - 如果等于True，计算输出信号大小的时候，会使用向上取整，代替默认的向下取整的操作
+
+### 10.4 激活层LeakyReLU
+
+```py
+class torch.nn.LeakyReLU(negative_slope=0.01, inplace=False)
+```
+
+对输入的每一个元素运用$f(x) = max(0, x) + {negative_slope} * min(0, x)$
+
+### 10.5 激活层Sigmod Tanh
+
+```py
+class torch.nn.Sigmoid [source]
+```
+
+对每个元素运用Sigmoid函数，Sigmoid 定义如下：
+
+```math
+    f(x)=1/(1+e^{−x})
+```
+
+### 10.6 激活层Tanh
+
+```py
+class torch.nn.Tanh [source]
+```
+
+对输入的每个元素，
+
+```math
+f(x)=e^x−e^{−x}/e^x+e^{-x}
+```
+
+### 10.7 全连接层Linear
+
+```py
+class torch.nn.Linear(in_features, out_features, bias=True)
+```
+
+对输入数据做线性变换：y=Ax+b
+
++ n_features - 每个输入样本的大小
++ out_features - 每个输出样本的大小
++ bias - 若设置为False，这层不会学习偏置。默认值：True
+
+### 10.8 随机丢失层Dropout
+
+```py
+class torch.nn.Dropout(p=0.5, inplace=False)
+```
+
+随机将输入张量中部分元素设置为0。对于每次前向调用，被置0的元素都是随机的。
+
++ p - 将元素置0的概率。默认值：0.5
++ in-place - 若设置为True，会在原地执行操作。默认值：False
+
+### 10.9 BN层BatchNorm2d
+
+```py
+class torch.nn.BatchNorm2d(num_features, eps=1e-05, momentum=0.1, affine=True)[source]
+```
+
+对小批量(mini-batch)3d数据组成的4d输入进行批标准化(Batch Normalization)操作
+
+```math
+y = \frac{x - mean[x]}{ \sqrt{Var[x]} + \epsilon} * gamma + beta
+```
+
+在每一个小批量（mini-batch）数据中，计算输入各个维度的均值和标准差。gamma与beta是可学习的大小为C的参数向量（C为输入大小）
+在训练时，该层计算每次输入的均值与方差，并进行移动平均。移动平均默认的动量值为0.1。
+
+在验证时，训练求得的均值/方差将用于标准化验证数据。
+
++ num_features： 来自期望输入的特征数，该期望输入的大小为'batch_size x num_features x height x width'
++ eps： 为保证数值稳定性（分母不能趋近或取0）,给分母加上的值。默认为1e-5。
++ momentum： 动态均值和动态方差所使用的动量。默认为0.1。
++ affine： 一个布尔值，当设为true，给该层添加可学习的仿射变换参数。
+
+### 10.10 BN层BatchNorm3d
+
+```py
+class torch.nn.BatchNorm3d(num_features, eps=1e-05, momentum=0.1, affine=True)
+```
+
+对小批量(mini-batch)4d数据组成的5d输入进行批标准化(Batch Normalization)操作
+
++ num_features： 来自期望输入的特征数，该期望输入的大小为'batch_size x num_features x depth x height x width'
++ eps： 为保证数值稳定性（分母不能趋近或取0）,给分母加上的值。默认为1e-5。
++ momentum： 动态均值和动态方差所使用的动量。默认为0.1。
++ affine： 一个布尔值，当设为true，给该层添加可学习的仿射变换参数。
