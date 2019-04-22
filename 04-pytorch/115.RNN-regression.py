@@ -94,4 +94,5 @@ for step in range(100):
     plt.draw(); plt.pause(0.05)
 
 plt.ioff()
+# print(1)
 plt.show()

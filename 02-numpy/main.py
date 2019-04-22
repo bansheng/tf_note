@@ -121,4 +121,4 @@ def test_04():
     print(np.clip(A,5,9))
 
 if __name__ == "__main__":
-    test_03_01()
+    test_03_02()
