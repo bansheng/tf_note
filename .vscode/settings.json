@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/dingyadong/anaconda3/envs/theano/bin/python"
+    "python.pythonPath": "/Users/dingyadong/anaconda3/envs/theano/bin/python",
+    "search.followSymlinks": false
 }
