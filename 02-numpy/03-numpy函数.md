@@ -149,7 +149,7 @@ array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 - a可以是单独数字代表range(a)，也可以是一维数组
 - p代表a中选项对应概率，None代表均匀分布
 
-## 7.numpy.squeeze()函数
+## 7. numpy.squeeze()函数
 
 语法：numpy.squeeze(a,axis = None)
 
@@ -173,4 +173,91 @@ array([[0, 1, 2, 3, 4],
 array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
 >>> np.squeeze(d)
 array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+```
+
+## 8. np.ravel()
+
+与np.flatten()相同，但是返回的是引用，会对原数据产生影响
+
+```python
+>>> a = np.array([[1,2],[3,4],[5,6]])
+>>> a
+array([[1, 2],
+       [3, 4],
+       [5, 6]])
+>>> b = a.flatten()
+>>> b
+array([1, 2, 3, 4, 5, 6])
+>>> c = a.ravel()
+>>> c
+array([1, 2, 3, 4, 5, 6])
+>>> c[3] = 100
+>>> a
+array([[  1,   2],
+       [  3, 100],
+       [  5,   6]])
+>>> b
+array([1, 2, 3, 4, 5, 6])
+>>> c
+array([  1,   2,   3, 100,   5,   6])
+```
+
+## 9. numpy.linalg.norm(x, ord=None, axis=None, keepdims=False)
+
+the following norms can be calculated:
+
+ord | norm for matrices | norm for vectors
+:-: | :-: | :-:
+None | Frobenius norm | 2-norm
+‘fro’ | Frobenius norm | –
+‘nuc’ | nuclear norm | –
+inf | max(sum(abs(x), axis=1)) | max(abs(x))
+-inf | min(sum(abs(x), axis=1)) | min(abs(x))
+0 | – | sum(x != 0)
+1 | max(sum(abs(x), axis=0)) | as below
+-1 | min(sum(abs(x), axis=0)) | as below
+2 | 2-norm (largest sing. value) | as below
+-2 | smallest singular value | as below
+other | – | sum(abs(x)**ord)**(1./ord)
+
+```python
+>>> from numpy import linalg as LA
+>>> a = np.arange(9) - 4
+>>> a
+array([-4, -3, -2, ...,  2,  3,  4])
+>>> b = a.reshape((3, 3))
+>>> b
+array([[-4, -3, -2],
+       [-1,  0,  1],
+       [ 2,  3,  4]])
+>>> LA.norm(a)
+7.745966692414834
+>>> LA.norm(b)
+7.745966692414834
+>>> LA.norm(b, 'fro')
+7.745966692414834
+>>> LA.norm(a, np.inf)
+4.0
+>>> LA.norm(b, np.inf)
+9.0
+>>> LA.norm(a, -np.inf)
+0.0
+>>> LA.norm(b, -np.inf)
+2.0
+```
+
+## 10.np.add.at(dw, indice, 1)
+
+```shell
+In [226]: x = [[0,4,1], [3,2,4]]
+     ...: dW = np.zeros((5,6),int)
+
+In [227]: np.add.at(dW,x,1)
+In [228]: dW
+Out[228]:
+array([[0, 0, 0, 1, 0, 0],
+       [0, 0, 0, 0, 1, 0],
+       [0, 0, 0, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0],
+       [0, 0, 1, 0, 0, 0]])
 ```
